@@ -14,7 +14,7 @@ metrics.info('app_info', 'Application info', version='1.0.3')
 
 
 def get_books_db_all():
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect('database/test.db')
     cursor = conn.execute("SELECT * from books")
     books = []
 
@@ -26,7 +26,7 @@ def get_books_db_all():
     print(len(books))
     return books
 def get_book_db_by_id(id):
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect('database/test.db')
     cursor = conn.execute("SELECT * from books where id = %s" % id)
     books = []
 
@@ -53,14 +53,15 @@ def hello_world():
 def books_all():
     # print(json.dumps(get_books_db_all(conn)) )
     if request.method == 'GET':
-        # return json.dumps(get_books_db_all()) 
-        return redirect(os.environ.get("REDIRECT_TO", "https://www.digitalocean.com"), code=301)
+        return json.dumps(get_books_db_all()) 
+        # return redirect(os.environ.get("REDIRECT_TO", "https://www.digitalocean.com"), code=301)
     else:
         return json.dumps(users)
 @app.route('/books/<int:id>')
 def books_by_id(id):
     # print(json.dumps(get_books_db_all(conn)) )
     if request.method == 'GET':
+        print(get_book_db_by_id(id))
         return get_book_db_by_id(id)
 
     else:
