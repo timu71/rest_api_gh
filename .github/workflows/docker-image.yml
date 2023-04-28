@@ -7,35 +7,35 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    container:
-      image: ubuntu:latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build Docker image
-        run: |
-          cd app
-          docker build -t flask-app-test:latest .
-      - name: Save Docker image
-        uses: actions/upload-artifact@v2
-        with:
-          name: flask-app-image
-          path: |
-            docker save flask-app-test:latest > flask-app-test.tar
-            gzip -f flask-app-test.tar
-            flask-app-test.tar.gz
 
-  download:
-    runs-on: ubuntu-latest
-    needs: build
+  build:
+
+    runs-on: ubuntu-slim
+
     steps:
-      - name: Download Docker image
-        uses: actions/download-artifact@v2
-        with:
-          name: flask-app-image
-      - name: Load Docker image
-        run: |
-          gzip -d flask-app-test.tar.gz
-          docker load -i flask-app-test.tar
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        cd flask-app
+        docker build -t flask-app-test-gh:latest .
+    - name: Archive Docker Image
+      uses: actions/upload-artifact@v2
+      with:
+        name: flask-app-test-download
+        path: |
+          docker save flask-app-test-gh:latest > flask-app-test-gh.tar
+          gzip -f flask-app-test-gh.tar
+          flask-app-test-gh.tar.gz
+          
+  download:
+    needs: build
+    runs-on: ubuntu-slim
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: flask-app-test-download
+        path: .
+    - name: Load Docker Image
+      run: |
+        gzip -df flask-app-test-gh.tar.gz
+        docker load -i flask-app-test-gh.tar
