@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: flaskapp-server
+spec:
+replicas: 3
+selector:
+  matchLabels:
+    app: flask_app
+template:
+  metadata:
+    labels:
+      app: flask_app
+  spec:
+    containers:
+    - name: flask
+      image: flaskapp
+      imagePullPolicy: Never
+      ports:
+      - name: flask
+        containerPort: 5000
+        protocol: TCP
+      # command: ["/bin/sh"]
+      # args: ["-c", "echo Hello from the Chef container; sleep 1000"]
+
+    securityContext:
+      runAsUser: 1
