@@ -17,7 +17,7 @@ jobs:
     - name: Build the Docker image
       run: |
         cd flask-app
-        docker build -t flask-app-test-gh:latest
+        docker build -t flask-app-test-gh:latest .
     # - name: Archive Docker Image
     # - uses: actions/upload-artifact@v2
     #   with:
