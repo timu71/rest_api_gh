@@ -25,16 +25,17 @@ jobs:
               role-session-name: ci-session-${{ github.event.repository.name }}
               # audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
         - name: Build the Docker image
+          env:
+            BRANCH_NAME: ${{ github.ref.split('/').pop() }}
           run: |
-            echo name ${{ github.ref.split('/').pop()}}
-            export BRANCH=$(echo {{ github.ref.split('/').pop()}}
+            echo ${{ env.BRANCH_NAME }}
             cd flask-app
-            docker build -t flask-app-$BRANCH-gh:latest .
+            docker build -t flask-app-${{ env.BRANCH_NAME }}-gh:latest .
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
         - name: push the Docker image
           run: |
-            docker tag flask-app-test-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
-            docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
+            docker tag flask-app-${{ env.BRANCH_NAME }}-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ env.BRANCH_NAME }}-ecr-python:0.0.2-SNAPSHOT
+            docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ env.BRANCH_NAME }}-ecr-python:0.0.2-SNAPSHOT
 
