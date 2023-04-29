@@ -15,7 +15,7 @@ jobs:
     steps:
 
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@6938fd4d98bab03faadb97b34396831e3780aea1
+      uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
       with:
           role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
           aws-region: eu-central-1
