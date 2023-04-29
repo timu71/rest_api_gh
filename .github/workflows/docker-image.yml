@@ -26,18 +26,18 @@ jobs:
               # audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
         - name: Get current branch
           run: |
-            echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})"
+            echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
             echo $BRANCH_NAME
             echo ${{ env.BRANCH_NAME }}
-        - name: Build the Docker image
+        - name Build the Docker image
           run: |
             cd flask-app
-            docker build -t flask-app-$BRANCH_NAME-gh:latest .
+            docker build -t flask-app-${{ env.BRANCH_NAME }}-gh:latest .
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
         - name: push the Docker image
           run: |
-            docker tag flask-app-$BRANCH_NAME-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-$BRANCH_NAME-ecr-python:0.0.2-SNAPSHOT
-            docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-$BRANCH_NAME-ecr-python:0.0.2-SNAPSHOT
+            docker tag flask-app-${{ env.BRANCH_NAME }}-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ env.BRANCH_NAME }}-ecr-python:0.0.2-SNAPSHOT
+            docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ env.BRANCH_NAME }}-ecr-python:0.0.2-SNAPSHOT
 
