@@ -27,15 +27,15 @@ jobs:
           gzip -f flask-app-test-gh.tar
           flask-app-test-gh.tar.gz
           
-  download:
-    needs: build
-    runs-on: ubuntu-slim
-    steps:
-    - uses: actions/download-artifact@v2
-      with:
-        name: flask-app-test-download
-        path: .
-    - name: Load Docker Image
-      run: |
-        gzip -df flask-app-test-gh.tar.gz
-        docker load -i flask-app-test-gh.tar
+  # download:
+  #   needs: build
+  #   runs-on: ubuntu-slim
+  #   steps:
+  #   - uses: actions/download-artifact@v2
+  #     with:
+  #       name: flask-app-test-download
+  #       path: .
+  #   - name: Load Docker Image
+  #     run: |
+  #       gzip -df flask-app-test-gh.tar.gz
+  #       docker load -i flask-app-test-gh.tar
