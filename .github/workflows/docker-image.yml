@@ -26,9 +26,10 @@ jobs:
               # audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
         - name: Build the Docker image
           run: |
-            echo name ${{ github.ref }}
+            echo name ${{ github.ref.split('/').pop()}}
+            export BRANCH=$(echo {{ github.ref.split('/').pop()}}
             cd flask-app
-            docker build -t flask-app-dev-gh:latest .
+            docker build -t flask-app-$BRANCH-gh:latest .
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
