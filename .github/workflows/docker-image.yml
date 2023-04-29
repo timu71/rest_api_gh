@@ -28,8 +28,6 @@ jobs:
           run: |
             cd flask-app
             docker build -t flask-app-test-gh:latest .
-        - name: push the Docker image
-          run: |
             docker tag flask-app-test:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
             docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
 
