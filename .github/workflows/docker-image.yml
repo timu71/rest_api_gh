@@ -13,17 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: |
-        cd flask-app
-        docker build -t flask-app-test-gh:latest .
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@6938fd4d98bab03faadb97b34396831e3780aea1
       with:
           role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
           aws-region: eu-central-1
           role-session-name: ci-session-${{ github.event.repository.name }}
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        cd flask-app
+        docker build -t flask-app-test-gh:latest .
     - name: push the Docker image
       run: |
         docker tag flask-app-test:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
