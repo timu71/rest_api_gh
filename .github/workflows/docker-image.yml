@@ -21,7 +21,7 @@ jobs:
           role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
           aws-region: eu-central-1
           role-session-name: ci-session-${{ github.event.repository.name }}
-
+          audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
     - name: Build the Docker image
       run: |
         cd flask-app
