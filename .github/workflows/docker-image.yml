@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
@@ -20,7 +21,7 @@ jobs:
           role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
           aws-region: eu-central-1
           role-session-name: ci-session-${{ github.event.repository.name }}
-    - uses: actions/checkout@v3
+
     - name: Build the Docker image
       run: |
         cd flask-app
