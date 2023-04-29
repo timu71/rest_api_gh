@@ -29,10 +29,10 @@ jobs:
             echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
             echo $BRANCH_NAME
             echo ${{ env.BRANCH_NAME }}
-        - name Build the Docker image
-          run:  
+        - name: Build the Docker image
+          run: |
             cd flask-app
-            docker build -t flask-app-prod-gh:latest .
+            docker build -t flask-app-${{ env.BRANCH_NAME }}-gh:latest .
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
