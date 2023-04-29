@@ -25,10 +25,9 @@ jobs:
               role-session-name: ci-session-${{ github.event.repository.name }}
               # audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
         - name: Build the Docker image
-          env:
-            BRANCH_NAME: ${{ github.ref.split('/')[2] }}
-
           run: |
+            echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+            echo $BRANCH_NAME
             echo ${{ env.BRANCH_NAME }}
             cd flask-app
             docker build -t flask-app-${{ env.BRANCH_NAME }}-gh:latest .
