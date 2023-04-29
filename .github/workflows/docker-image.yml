@@ -26,7 +26,8 @@ jobs:
               # audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
         - name: Build the Docker image
           env:
-            BRANCH_NAME: ${{ github.ref.split('/').pop() }}
+            BRANCH_NAME: ${{ github.ref.split('/')[2] }}
+
           run: |
             echo ${{ env.BRANCH_NAME }}
             cd flask-app
