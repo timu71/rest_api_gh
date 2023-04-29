@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "prod", "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "prod", "dev" ]
 
 jobs:
     build:
@@ -26,8 +26,9 @@ jobs:
               # audience: arn:aws:iam::233276167072:oidc-provider/token.actions.githubusercontent.com
         - name: Build the Docker image
           run: |
+            echo name ${{ github.ref }}
             cd flask-app
-            docker build -t flask-app-test-gh:latest .
+            docker build -t flask-app-dev-gh:latest .
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
@@ -36,41 +37,3 @@ jobs:
             docker tag flask-app-test-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
             docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
 
-
-  # steps:
-    # - uses: actions/checkout@v3
-    # - name: Configure AWS Credentials 
-    #   uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
-    #   with:
-    #       role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
-    #       aws-region: eu-central-1
-    #       # role-session-name: ci-session-${{ github.event.repository.name }}
-    # - name: Build the Docker image
-    #   run: |
-    #     cd flask-app
-    #     docker build -t flask-app-test-gh:latest .
-    #     docker tag flask-app-test:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
-    #     docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-dev-ecr-python:0.0.2-SNAPSHOT
-
-
-    # - name: Archive Docker Image
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: flask-app-test-download
-    #     path: |
-    #       docker save flask-app-test-gh:latest > flask-app-test-gh.tar
-    #       gzip -f flask-app-test-gh.tar
-    #       flask-app-test-gh.tar.gz
-          
-  # download:
-  #   needs: build
-  #   runs-on: ubuntu-slim
-  #   steps:
-  #   - uses: actions/download-artifact@v2
-  #     with:
-  #       name: flask-app-test-download
-  #       path: .
-  #   - name: Load Docker Image
-  #     run: |
-  #       gzip -df flask-app-test-gh.tar.gz
-  #       docker load -i flask-app-test-gh.tar
