@@ -10,7 +10,7 @@ on:
 jobs:
     build:
         env:
-          DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'preprod') }}
+          DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'prod') }}
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
         permissions:
