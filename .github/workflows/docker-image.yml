@@ -4,11 +4,12 @@ on:
   push:
     branches: [ "prod", "dev" ]
   pull_request:
-    types: [closed]
+    # types: [closed]
     branches: [ "prod", "dev" ]y
 
 jobs:
     build:
+      if: github.event.pull_request.merged == true
         permissions:
             id-token: write
             contents: read
