@@ -4,13 +4,14 @@ on:
   push:
     branches: [ "prod", "dev" ]
   pull_request:
+    # types: [closed]
     branches: [ "prod", "dev" ]
 
 jobs:
     build:
-      permissions:
-      id-token: write
-      contents: read
+        permissions:
+            id-token: write
+            contents: read
 
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
