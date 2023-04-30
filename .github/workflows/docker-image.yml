@@ -12,9 +12,8 @@ jobs:
       id-token: write
       contents: read
 
-      if: github.event.pull_request.merged == true
-
         runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
 
         steps:
         - uses: actions/checkout@v3
