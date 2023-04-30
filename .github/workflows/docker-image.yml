@@ -4,8 +4,7 @@ on:
   push:
     branches: [ "prod", "dev" ]
   pull_request:
-    # types: [closed]
-    branches: [ "prod", "dev" ]y
+    branches: [ "prod", "dev" ]
 
 jobs:
     build:
