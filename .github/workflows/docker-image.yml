@@ -9,6 +9,8 @@ on:
 
 jobs:
     build:
+        env:
+          DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'preprod') }}
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
         permissions:
@@ -30,8 +32,7 @@ jobs:
               # # echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
               # # echo $BRANCH_NAME=${{ github.ref_slug }}
               # # echo ${{ env.BRANCH_NAME }}
-            env:
-              DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'preprod') }}
+
             run: echo ${{ env.DOCKER_REPO }}
 
           - name: Build the Docker image
