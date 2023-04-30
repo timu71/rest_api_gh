@@ -16,34 +16,34 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-          if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
-          - uses: actions/checkout@v3
-          - name: Configure AWS Credentials
-            uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
-            with:
-                role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
-                aws-region: eu-central-1
-                role-session-name: ci-session-${{ github.event.repository.name }}
+          - if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
+          uses: actions/checkout@v3
+          name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+          with:
+              role-to-assume: arn:aws:iam::233276167072:role/rest-api-gh-role
+              aws-region: eu-central-1
+              role-session-name: ci-session-${{ github.event.repository.name }}
 
-          - name: Get current branch
-            run: |
-              echo ${{ github.ref_slug }}
-              ${{ github.ref_slug }}
-              # echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-              # echo $BRANCH_NAME=${{ github.ref_slug }}
-              # echo ${{ env.BRANCH_NAME }}
+          # - name: Get current branch
+          #   run: |
+          #     echo ${{ github.ref_slug }}
+          #     ${{ github.ref_slug }}
+          #     # echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+          #     # echo $BRANCH_NAME=${{ github.ref_slug }}
+          #     # echo ${{ env.BRANCH_NAME }}
 
-          - name: Build the Docker image
-            run: |
-              cd flask-app
-              docker build -t flask-app-${{ github.ref_slug }}-gh:latest .
+          # - name: Build the Docker image
+          #   run: |
+          #     cd flask-app
+          #     docker build -t flask-app-${{ github.ref_slug }}-gh:latest .
 
-          - name: Login to Amazon ECR
-            id: login-ecr
-            uses: aws-actions/amazon-ecr-login@v1
+          # - name: Login to Amazon ECR
+          #   id: login-ecr
+          #   uses: aws-actions/amazon-ecr-login@v1
 
-          - name: push the Docker image
-            run: |
-              docker tag flask-app-${{ github.ref_slug}}-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ github.ref_slug}}-ecr-python:0.0.2-SNAPSHOT
-              docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ github.ref_slug}}-ecr-python:0.0.2-SNAPSHOT
+          # - name: push the Docker image
+          #   run: |
+          #     docker tag flask-app-${{ github.ref_slug}}-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ github.ref_slug}}-ecr-python:0.0.2-SNAPSHOT
+          #     docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ github.ref_slug}}-ecr-python:0.0.2-SNAPSHOT
 
