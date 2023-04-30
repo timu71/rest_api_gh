@@ -31,6 +31,34 @@ resource "aws_ecr_repository" "my_repo_python" {
   }
 }
 
+resource "aws_ecr_repository" "my_repo_java_prod" {
+  name = "tf-training-prod-ecr-java"
+
+# encryption_configuration {
+#     encryption_type = "AES256"
+#   }
+
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
+resource "aws_ecr_repository" "my_repo_python_prod" {
+  name = "tf-training-prod-ecr-python"
+
+# encryption_configuration {
+#     encryption_type = "AES256"
+#   }
+
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
 # resource "aws_ecr_lifecycle_policy" "my_repo_lifecycle" {
 #   repository = aws_ecr_repository.my_repo.name
 # lifecycle_policy = jsonencode({
