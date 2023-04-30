@@ -26,13 +26,6 @@ jobs:
                 role-session-name: ci-session-${{ github.event.repository.name }}
 
           - name: Get current branch
-            # run: |
-              # echo ${{ github.ref_slug }}
-              # ${{ github.ref_slug }}
-              # # echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-              # # echo $BRANCH_NAME=${{ github.ref_slug }}
-              # # echo ${{ env.BRANCH_NAME }}
-
             run: echo ${{ env.DOCKER_REPO }}
 
           - name: Build the Docker image
