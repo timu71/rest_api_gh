@@ -26,6 +26,7 @@ jobs:
                 aws-region: eu-central-1
                 role-session-name: ci-session-${{ github.event.repository.name }}
 
+
           - name: Get current branch
             run: echo ${{ env.DOCKER_REPO }}
 
