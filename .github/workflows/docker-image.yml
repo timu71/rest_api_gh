@@ -8,10 +8,11 @@ on:
 
 jobs:
     build:
+      permissions:
+      id-token: write
+      contents: read
+
       if: github.event.pull_request.merged == true
-        permissions:
-            id-token: write
-            contents: read
 
         runs-on: ubuntu-latest
 
