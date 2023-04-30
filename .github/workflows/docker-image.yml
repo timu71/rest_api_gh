@@ -32,6 +32,7 @@ jobs:
               # # echo ${{ env.BRANCH_NAME }}
             env:
               DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'preprod') }}
+            run: echo $DOCKER_REPO
 
           - name: Build the Docker image
             run: |
