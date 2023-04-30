@@ -32,12 +32,12 @@ jobs:
               # # echo ${{ env.BRANCH_NAME }}
             env:
               DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'preprod') }}
-            run: echo $DOCKER_REPO
+            run: echo ${{ DOCKER_REPO }}
 
           - name: Build the Docker image
             run: |
               cd flask-app
-              docker build -t flask-app-$DOCKER_REPO-gh:latest .
+              docker build -t flask-app-${{ DOCKER_REPO }}-gh:latest .
 
           - name: Login to Amazon ECR
             id: login-ecr
@@ -45,6 +45,6 @@ jobs:
 
           - name: push the Docker image
             run: |
-              docker tag flask-app-$DOCKER_REPO-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-$DOCKER_REPO-ecr-python:0.0.2-SNAPSHOT
-              docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-$DOCKER_REPO-ecr-python:0.0.2-SNAPSHOT
+              docker tag flask-app-${{ DOCKER_REPO }}-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ DOCKER_REPO }}-ecr-python:0.0.2-SNAPSHOT
+              docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{ DOCKER_REPO }}-ecr-python:0.0.2-SNAPSHOT
 
