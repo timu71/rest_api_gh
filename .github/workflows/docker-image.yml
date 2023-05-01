@@ -19,7 +19,7 @@ jobs:
             contents: read
           
         steps:
-          - uses: actions/checkout@v3
+          - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         
           - name: Configure AWS Credentials
             uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
@@ -39,7 +39,7 @@ jobs:
 
           - name: Login to Amazon ECR
             id: login-ecr
-            uses: aws-actions/amazon-ecr-login@v1
+            uses: aws-actions/amazon-ecr-login@2f9f10ea3fa2eed41ac443fee8bfbd059af2d0a4
 
           - name: push the Docker image
             run: |
