@@ -10,7 +10,8 @@ on:
 jobs:
     build:
         env:
-          DOCKER_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'prod') }}
+          DOCKER_TARGET_REPO: ${{ github.event.pull_request.base.ref || (github.ref == 'refs/heads/dev' && 'dev') || (github.ref == 'refs/heads/prod' && 'prod') }}
+          DOCKER_BASE_REPO: 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prod'
         permissions:
@@ -29,12 +30,12 @@ jobs:
 
 
           - name: Get current branch
-            run: echo ${{ env.DOCKER_REPO }}
+            run: echo ${{ env.DOCKER_TARGET_REPO }}
 
           - name: Build the Docker image
             run: |
               cd flask-app
-              docker build -t flask-app-${{  env.DOCKER_REPO }}-gh:latest .
+              docker build -t flask-app-${{  env.DOCKER_TARGET_REPO }}-gh:latest .
 
           - name: Login to Amazon ECR
             id: login-ecr
@@ -42,6 +43,6 @@ jobs:
 
           - name: push the Docker image
             run: |
-              docker tag flask-app-${{  env.DOCKER_REPO }}-gh:latest 233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{  env.DOCKER_REPO }}-ecr-python:0.0.2-SNAPSHOT
-              docker push  233276167072.dkr.ecr.eu-central-1.amazonaws.com/tf-training-${{  env.DOCKER_REPO }}-ecr-python:0.0.2-SNAPSHOT
+              docker tag flask-app-${{  env.DOCKER_TARGET_REPO }}-gh:latest ${{  env.DOCKER_BASE_REPO }}-${{  env.DOCKER_TARGET_REPO }}-ecr-python:0.0.2-SNAPSHOT
+              docker push  ${{  env.DOCKER_BASE_REPO }}-${{  env.DOCKER_TARGET_REPO }}-ecr-python:0.0.2-SNAPSHOT
 
